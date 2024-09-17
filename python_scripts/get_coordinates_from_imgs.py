@@ -20,22 +20,23 @@ def get_coord(path):
     lon_dir = exif[34853][3]
     lon_deg, lon_min, lon_sec = exif[34853][4]
     longitude = dms2dd(lon_deg, lon_min, lon_sec, lon_dir)
+    bearing = exif[34853][17]
+    return latitude, longitude, bearing
 
-    return latitude, longitude
 
 
 
 folder = ""
 outfile = open(folder + os.sep + 'img_coods.csv', 'w')
-outfile.write('latitude,longitude,image\n')
+outfile.write('latitude,longitude,image,bearing\n')
 files = glob(folder + os.sep + '*.jpg')
 
 
 for f in files:
     try:
         name = f.split(os.sep)[-1]
-        lat, lon = get_coord(f)
-        outfile.write(f'{lat},{lon},{name}\n')
+        lat, lon, bearing = get_coord(f)
+        outfile.write(f'{lat},{lon},{name},{bearing}\n')
     except: pass
 outfile.close()
 
